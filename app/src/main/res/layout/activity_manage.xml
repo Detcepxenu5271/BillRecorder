@@ -10,7 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/background_gray"
-        android:divider="@drawable/divider_thick"
+        android:divider="@drawable/divider_horizontal_thick"
         android:orientation="vertical"
         android:showDividers="middle"
         tools:layout_editor_absoluteY="581dp">
@@ -31,7 +31,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:divider="@drawable/divider_thin"
+                android:divider="@drawable/divider_horizontal_thin"
                 android:dividerPadding="20dp"
                 android:orientation="vertical"
                 android:showDividers="middle">
@@ -71,10 +71,37 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@color/background_gray"
+            android:divider="@drawable/divider_vertical_thin"
+            android:dividerPadding="10dp"
             android:orientation="horizontal"
+            android:showDividers="middle"
             app:layout_constraintBottom_toBottomOf="parent"
             tools:layout_editor_absoluteY="731dp">
 
+            <ImageView
+                android:id="@+id/account"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:contentDescription="@string/account_imageView_description"
+                app:srcCompat="@android:drawable/ic_menu_my_calendar" />
+
+            <ImageView
+                android:id="@+id/statistics"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:contentDescription="@string/statistics_imageView_description"
+                app:srcCompat="@android:drawable/ic_menu_sort_by_size" />
+
+            <ImageView
+                android:id="@+id/search"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:contentDescription="@string/search_imageView_description"
+                app:srcCompat="@android:drawable/ic_menu_search"
+                tools:ignore="ImageContrastCheck" />
         </LinearLayout>
     </LinearLayout>
 

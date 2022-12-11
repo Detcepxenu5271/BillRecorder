@@ -6,4 +6,10 @@
     <string name="test_note">这是一段备注，尽量长（十五字）</string>
     <string name="billList_scrollView_description">账单列表，按时间排序，可以滚动查看更多</string>
     <string name="return_button">Return</string>
+    <string name="account_imageView_description">点击进入账户管理页面</string>
+    <string name="statistics_imageView_description">点击进入数据统计页面</string>
+    <string name="search_imageView_description">点击进入账单查询页面</string>
+    <string name="addBillManual_button">添加</string>
+    <string name="addBill_note_hint">备注...</string>
+    <string name="addBill_amount_hint">金额...</string>
 </resources>

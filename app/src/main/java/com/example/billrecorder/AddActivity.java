@@ -1,6 +1,7 @@
 package com.example.billrecorder;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -17,6 +18,7 @@ public class AddActivity extends AppCompatActivity {
 
         // 获取 addBill 图片
         ImageView addBill = (ImageView) this.findViewById(R.id.addBill);
+        ConstraintLayout addBillManual = (ConstraintLayout) this.findViewById(R.id.addBillManual);
 
         // addBill 的长按事件：语音记账
         addBill.setOnLongClickListener(view -> {
@@ -25,7 +27,8 @@ public class AddActivity extends AppCompatActivity {
 
         // addBill 的点击事件：手动记账
         addBill.setOnClickListener(view -> {
-
+            addBill.setVisibility(View.GONE); // 首先将 addBill 设为隐藏
+            addBillManual.setVisibility(View.VISIBLE); // 并且将 addBillManual 设为可见，交换底部的组件
         });
 
         // 获取 showBill 布局
