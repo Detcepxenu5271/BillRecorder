@@ -44,7 +44,7 @@
             android:layout_marginTop="0dp"
             android:background="@color/background_gray"
             android:contentDescription="@string/addBill_imageView_description"
-            android:visibility="gone"
+            android:visibility="visible"
             app:srcCompat="@android:drawable/ic_menu_add"
             tools:ignore="ImageContrastCheck" />
 
@@ -52,61 +52,80 @@
             android:id="@+id/addBillManual"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:visibility="visible">
+            android:background="@color/background_gray"
+            android:visibility="gone">
 
             <TextView
                 android:id="@+id/addBillDate"
-                android:layout_width="0dp"
+                android:layout_width="wrap_content"
                 android:layout_height="38dp"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="16dp"
-                android:layout_marginBottom="16dp"
-                android:text="2022/01/02"
+                android:layout_marginEnd="8dp"
+                android:background="@color/text_background_gray"
+                android:text="@string/test_date"
                 android:textSize="28sp"
-                app:layout_constraintBottom_toTopOf="@+id/addBillAmount"
+                app:layout_constraintEnd_toStartOf="@+id/addBillTime"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
                 android:id="@+id/addBillTime"
-                android:layout_width="0dp"
+                android:layout_width="wrap_content"
                 android:layout_height="38dp"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="16dp"
                 android:layout_marginEnd="16dp"
-                android:layout_marginBottom="16dp"
-                android:text="12:34:56"
+                android:background="@color/text_background_gray"
+                android:text="@string/test_time"
                 android:textSize="28sp"
-                app:layout_constraintBottom_toTopOf="@+id/addBillAmount"
-                app:layout_constraintEnd_toStartOf="@+id/button"
+                app:layout_constraintEnd_toStartOf="@+id/addBillConfirm"
+                app:layout_constraintHorizontal_bias="1.0"
                 app:layout_constraintStart_toEndOf="@+id/addBillDate"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <EditText
                 android:id="@+id/addBillAmount"
-                android:layout_width="0dp"
-                android:layout_height="53dp"
+                android:layout_width="126dp"
+                android:layout_height="48dp"
                 android:layout_marginStart="16dp"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="32dp"
                 android:layout_marginEnd="16dp"
                 android:autofillHints=""
+                android:background="@color/text_background_gray"
                 android:ems="10"
                 android:hint="@string/addBill_amount_hint"
                 android:inputType="numberDecimal"
-                android:textColorHint="#78909C"
+                android:textColorHint="#607D8B"
                 android:textSize="24sp"
-                app:layout_constraintEnd_toStartOf="@+id/button"
-                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/addBillConfirm"
+                app:layout_constraintStart_toEndOf="@+id/addBillType"
                 app:layout_constraintTop_toBottomOf="@+id/addBillTime" />
+
+            <ImageView
+                android:id="@+id/addBillType"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="24dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginBottom="24dp"
+                android:contentDescription="@string/addBillType_imageView_description"
+                app:layout_constraintBottom_toTopOf="@+id/addBillNote"
+                app:layout_constraintEnd_toStartOf="@+id/addBillAmount"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/addBillDate"
+                app:srcCompat="@drawable/outcome"
+                tools:ignore="ImageContrastCheck" />
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/addBillNote"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="32dp"
                 android:layout_marginEnd="16dp"
-                app:layout_constraintEnd_toStartOf="@+id/button"
+                app:layout_constraintEnd_toStartOf="@+id/addBillConfirm"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/addBillAmount">
 
@@ -119,14 +138,14 @@
             </com.google.android.material.textfield.TextInputLayout>
 
             <Button
-                android:id="@+id/button"
-                android:layout_width="wrap_content"
+                android:id="@+id/addBillConfirm"
+                android:layout_width="90dp"
                 android:layout_height="0dp"
                 android:layout_marginTop="16dp"
                 android:layout_marginEnd="16dp"
                 android:layout_marginBottom="16dp"
                 android:text="@string/addBillManual_button"
-                android:textSize="20sp"
+                android:textSize="24sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
