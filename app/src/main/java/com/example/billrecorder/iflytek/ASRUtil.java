@@ -112,6 +112,11 @@ public class ASRUtil {
                 Pattern p;
                 Matcher m;
 
+                // 除去逗号（数字较大时用于分隔的逗号）
+                p = Pattern.compile(",");
+                m = p.matcher(result);
+                result = m.replaceAll("");
+
                 // 提取类别（收入/支出）
                 boolean is_outcome = true;
                 p = Pattern.compile("(收入|支出)");
