@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Environment;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -16,6 +17,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.billrecorder.Layout.BillInfoLayout;
 import com.example.billrecorder.database.Bill;
 import com.example.billrecorder.database.BillDBEngine;
+import com.example.billrecorder.file.FileTxtUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,6 +27,8 @@ public class ManageActivity extends AppCompatActivity {
     // -------- 视图中的组件 --------
 
     private LinearLayout billListLinearLayout;
+
+    private Button exportButton; // 导出账单到 txt 文件（个人用）
 
     // 将 Bill 数据库中的信息加载到 billList 中
     private void billListLoadBill() {
@@ -61,6 +65,9 @@ public class ManageActivity extends AppCompatActivity {
         // -------- 获取组件 --------
 
         billListLinearLayout = (LinearLayout) this.findViewById(R.id.billListLinearLayout);
+
+        exportButton = (Button) this.findViewById(R.id.exportButton);
+        exportButton.setOnClickListener(clickListener);
 
         // -------- manageButton 部分的三个跳转按钮（账户、统计、查询） --------
 
@@ -100,6 +107,20 @@ public class ManageActivity extends AppCompatActivity {
 //                Intent intent = new Intent(ManageActivity.this, TODO.class);
 //                startActivity(intent);
                 // AddActivity.this.finish();
+            } else
+            if (view.getId() == R.id.exportButton) {
+                StringBuilder exportContent = new StringBuilder();
+
+                List<Bill> bills = billDBEngine.query_all_bill();
+                for (Bill bill : bills) {
+                    exportContent.append(bill.toString()).append("\n");
+                }
+
+                String fileDir = ManageActivity.this.getExternalFilesDir(null).getPath() + "/";
+                String fileName = "bill.txt";
+
+                FileTxtUtils.writeTxtToFile(exportContent.toString(), fileDir, fileName);
+                Toast.makeText(ManageActivity.this, "Export bill in " + fileDir, Toast.LENGTH_SHORT).show();
             }
         }
     };
@@ -107,7 +128,7 @@ public class ManageActivity extends AppCompatActivity {
     private void showBillHandleDialog(BillInfoLayout billInfoLayout){
         final AlertDialog.Builder normalDialog = new AlertDialog.Builder(this);
         normalDialog.setTitle("账单处理");
-        normalDialog.setMessage("确定要删除该条账单吗？");
+        normalDialog.setMessage(R.string.showBillHandleDialog_hint);
         normalDialog.setPositiveButton("确定",
             new DialogInterface.OnClickListener() {
                 @Override

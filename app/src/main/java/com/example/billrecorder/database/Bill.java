@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
+import java.util.Calendar;
 import java.util.Date;
 
 // 表示“表”的类
@@ -43,12 +44,14 @@ public class Bill {
 
     @Override
     public String toString() {
-        return "Student{" +
-                "id=" + id +
-                ", account_id=" + account_id +
-                ", date=" + date +
-                ", amount=" + amount +
-                ", note='" + note + '\'' +
-                '}';
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(new Date(date));
+        return calendar.get(Calendar.YEAR) + "\t" +
+               calendar.get(Calendar.MONTH) + "\t" +
+               calendar.get(Calendar.DAY_OF_MONTH) + "\t" +
+               calendar.get(Calendar.HOUR_OF_DAY) + ":" + calendar.get(Calendar.MINUTE) + ":" + calendar.get(Calendar.SECOND) + "\t" +
+               amount + "\t" +
+               "null" + "\t" + // tag，自用格式
+               note;
     }
 }

@@ -6,7 +6,17 @@
     android:layout_height="match_parent"
     tools:context=".ManageActivity">
 
+    <Button
+        android:id="@+id/exportButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Export"
+        app:layout_constraintBaseline_toBottomOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
     <LinearLayout
+        android:id="@+id/linearLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/background_gray"
@@ -28,7 +38,7 @@
                 android:divider="@drawable/divider_horizontal_thin"
                 android:dividerPadding="20dp"
                 android:orientation="vertical"
-                android:showDividers="middle"/>
+                android:showDividers="middle" />
         </ScrollView>
 
         <LinearLayout

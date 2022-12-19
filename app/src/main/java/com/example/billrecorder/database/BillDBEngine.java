@@ -19,8 +19,6 @@ public class BillDBEngine {
         // 注意 BillDatabase 是单例的，所以哪怕实例化多个 BillDBEngine 也只会有一个 BillDatabase
         BillDatabase billDatabase = BillDatabase.getInstance(context);
         billDao = billDatabase.get_bill_dao();
-
-        insertTestBill(); // TODO: 测试用，回头连着下面的函数一起删掉
     }
     //插入
     public void insert_bill(Bill ... bill) {
@@ -116,23 +114,4 @@ public class BillDBEngine {
             return null;
         }
     }*/
-
-    private void insertTestBill() {
-        List<Bill> bills = query_all_bill();
-        if (bills.isEmpty()) {
-            insert_bill(new Bill(0, 1641009600886L, 12.0, "测试一")); // 2022.1.1 12:00:00
-            insert_bill(new Bill(0, 1643774400899L, 11.0, "测试二")); // 2022.2.2 12:00:00
-            insert_bill(new Bill(0, 1646280000900L, 10.0, "测试三")); // 2022.3.3 12:00:00
-            insert_bill(new Bill(0, 1649044800900L, 9.0, "测试四")); // 2022.4.4 12:00:00
-            insert_bill(new Bill(0, 1651723200900L, 8.0, "测试五")); // 2022.5.5 12:00:00
-            insert_bill(new Bill(0, 1654488000900L, 7.0, "测试六")); // 2022.6.6 12:00:00
-            insert_bill(new Bill(0, 1657166400900L, 6.0, "测试七")); // 2022.7.7 12:00:00
-            insert_bill(new Bill(0, 1659931200900L, 5.0, "测试八")); // 2022.8.8 12:00:00
-            insert_bill(new Bill(0, 1662696000900L, 4.0, "测试九")); // 2022.9.9 12:00:00
-            insert_bill(new Bill(0, 1665374400900L, 3.0, "测试十")); // 2022.10.10 12:00:00
-            insert_bill(new Bill(0, 1668139200900L, 2.0, "测试十一")); // 2022.11.11 12:00:00
-            insert_bill(new Bill(0, 1670817600901L, 1.0, "测试十二")); // 2022.12.12 12:00:00
-            insert_bill(new Bill(0, 1672545600348L, 99.99, "测试十三")); // 2023.1.1 12:00:00
-        }
-    }
 }
