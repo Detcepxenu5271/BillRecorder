@@ -1,6 +1,7 @@
 <resources>
     <string name="account_imageView_description">点击进入账户管理页面</string>
-    <string name="addBillManual_button">确认添加</string>
+    <string name="addBillManual_confirm">确认添加</string>
+    <string name="addBillManual_cancel">取消</string>
     <string name="addBillType_imageView_description">表示账单类别（支出或收入）的图片</string>
     <string name="addBill_amount_hint">金额...</string>
     <string name="addBill_imageView_description">添加账单，按住语音输入，点击手动输入</string>

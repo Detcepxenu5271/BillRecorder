@@ -15,55 +15,20 @@
         android:showDividers="middle"
         tools:layout_editor_absoluteY="581dp">
 
-        <Button
-            android:id="@+id/ManageReturn"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/return_button"
-            android:textSize="20sp" />
-
         <ScrollView
             android:id="@+id/billList"
             android:layout_width="match_parent"
-            android:layout_height="525dp"
+            android:layout_height="550dp"
             android:contentDescription="@string/billList_scrollView_description">
 
             <LinearLayout
+                android:id="@+id/billListLinearLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:divider="@drawable/divider_horizontal_thin"
                 android:dividerPadding="20dp"
                 android:orientation="vertical"
-                android:showDividers="middle">
-
-                <include layout="@layout/bill_info" />
-
-                <include
-                    layout="@layout/bill_info"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
-
-                <include
-                    layout="@layout/bill_info"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
-
-                <include
-                    layout="@layout/bill_info"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
-
-                <include
-                    layout="@layout/bill_info"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
-
-                <include
-                    layout="@layout/bill_info"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
-
-            </LinearLayout>
+                android:showDividers="middle"/>
         </ScrollView>
 
         <LinearLayout

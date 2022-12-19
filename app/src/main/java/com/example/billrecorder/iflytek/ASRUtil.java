@@ -1,8 +1,10 @@
 package com.example.billrecorder.iflytek;
 
+import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.example.billrecorder.AddActivity;
 import com.iflytek.cloud.RecognizerListener;
@@ -18,11 +20,17 @@ import java.util.regex.Pattern;
 
 public class ASRUtil {
 
-    public static String appid = "6b98ee69";
-
     private AddActivity addActivity;
 
-    public void setAddActivity(AddActivity addActivity) { this.addActivity = addActivity; }
+    public static String appid = "6b98ee69";
+
+    // -------- 构造函数 --------
+
+    public ASRUtil(AddActivity addActivity) {
+        this.addActivity = addActivity;
+    }
+
+    // public void setAddActivity(AddActivity addActivity) { this.addActivity = addActivity; }
 
     // -------- 识别结果 --------
 
@@ -100,6 +108,8 @@ public class ASRUtil {
                 Log.d("ASR", "result: " + result);
             }
             if (b) { // 语音识别结束
+                Toast.makeText(addActivity, result, Toast.LENGTH_SHORT).show(); // TODO: 测试用，回头删掉
+
                 // 处理语音输入结果，提取类别、价格、备注信息
                 Pattern p;
                 Matcher m;

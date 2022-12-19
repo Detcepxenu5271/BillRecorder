@@ -22,7 +22,10 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.TimePicker;
+import android.widget.Toast;
 
+import com.example.billrecorder.database.Bill;
+import com.example.billrecorder.database.BillDBEngine;
 import com.example.billrecorder.iflytek.ASRUtil;
 import com.google.android.material.textfield.TextInputEditText;
 
@@ -42,10 +45,13 @@ public class AddActivity extends AppCompatActivity {
     private EditText addBillAmount;
     private TextInputEditText addBillNote;
     private Button addBillConfirm;
+    private Button addBillCancel;
 
     private LinearLayout showBill;
 
     // -------- 账单信息 --------
+
+    private int account_id = 0; // 当前账户 TODO: 增加账户管理功能
 
     private Calendar calendar_send = Calendar.getInstance(); // 应该被添加到账单中的时间（在确认添加时）
     private boolean is_outcome; // 当前账单类别是否为支出
@@ -80,7 +86,8 @@ public class AddActivity extends AppCompatActivity {
     // -------- 权限设置 --------
 
     private static final String[] PERMISSIONS_STORAGE = {
-            Manifest.permission.RECORD_AUDIO
+            Manifest.permission.RECORD_AUDIO,
+            Manifest.permission.WRITE_EXTERNAL_STORAGE
     };
     private static int REQUEST_PERMISSION_CODE = 3; // XXX: 参考别人的写法，不知道为什么要设为 3、设为 3 对不对
 
@@ -92,6 +99,17 @@ public class AddActivity extends AppCompatActivity {
                 }
             }
         }
+    }
+
+    // -------- 数据库模块 --------
+
+    private BillDBEngine billDBEngine;
+
+    // 将当前的账单信息添加到数据库中
+    private void dbAddBill() {
+        Bill bill = new Bill(account_id, calendar_send.getTime().getTime(), (is_outcome?-1:1)*amount, note);
+        Toast.makeText(this, "insert " + bill.toString(), Toast.LENGTH_SHORT).show(); // TODO: 测试用，回头删掉
+        billDBEngine.insert_bill(bill);
     }
 
     // -------- onCreate --------
@@ -119,11 +137,13 @@ public class AddActivity extends AppCompatActivity {
         addBillAmount = this.findViewById(R.id.addBillAmount);
         addBillNote = this.findViewById(R.id.addBillNoteInput);
         addBillConfirm = this.findViewById(R.id.addBillConfirm);
+        addBillCancel = this.findViewById(R.id.addBillCancel);
 
         addBillDate.setOnClickListener(clickListener); // addBillDate 的点击事件：日期选择
         addBillTime.setOnClickListener(clickListener); // addBillTime 的点击事件：时间选择
         addBillType.setOnClickListener(clickListener); // addBillType 的点击事件：时间选择
         addBillConfirm.setOnClickListener(clickListener); // addBillConfirm 的点击事件：确认添加账单
+        addBillCancel.setOnClickListener(clickListener); // addBillCancel 的点击事件：取消添加账单
 
         // 获取 showBill 布局
         showBill = this.findViewById(R.id.showBill);
@@ -132,13 +152,16 @@ public class AddActivity extends AppCompatActivity {
 
         // -------- 初始化 asrUtil --------
 
-        asrUtil = new ASRUtil();
-        asrUtil.setAddActivity(this);
+        asrUtil = new ASRUtil(this);
         asrUtil.InitASR(this);
 
         // -------- 请求权限（录音） --------
 
         getPermission(this);
+
+        // -------- 初始化数据库 --------
+
+        billDBEngine = new BillDBEngine(this);
     }
 
     // -------- addBill 按钮状态切换 --------
@@ -165,11 +188,11 @@ public class AddActivity extends AppCompatActivity {
         }
 
         // 设置金额
+        // amount = amount_set;
         addBillAmount.setText(String.valueOf(amount_set));
-        amount = amount_set;
 
         // 设置备注
-        note = note_set;
+        // note = note_set;
         if (note_set != null) {
             addBillNote.setText(note_set);
         }
@@ -261,6 +284,16 @@ public class AddActivity extends AppCompatActivity {
                 }
             } else
             if (view.getId() == R.id.addBillConfirm) {
+                // 向数据库添加一条账单
+                // 这里只有 amount 和 note 是直接从输入框获取的，其他已经在进入或修改时设置过了
+                amount = Double.parseDouble(addBillAmount.getText().toString());
+                note = addBillNote.getText().toString(); // 获取当前 note
+
+                dbAddBill();
+
+                switchAdd();
+            } else
+            if (view.getId() == R.id.addBillCancel) {
                 switchAdd();
             }
         }
