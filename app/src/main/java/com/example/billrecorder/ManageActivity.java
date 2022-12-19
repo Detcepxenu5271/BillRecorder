@@ -1,5 +1,7 @@
 package com.example.billrecorder;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -7,6 +9,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -33,6 +36,9 @@ public class ManageActivity extends AppCompatActivity {
             // 创建一个新的 BillInfoLayout，设置账单信息，并记录到 List 里
             BillInfoLayout billInfoLayout = new BillInfoLayout(this, null);
             billInfoLayout.setInfo(bill);
+
+            billInfoLayout.setOnClickListener(billClickListener);
+
             billListLinearLayout.addView(billInfoLayout);
         }
     }
@@ -95,6 +101,37 @@ public class ManageActivity extends AppCompatActivity {
 //                startActivity(intent);
                 // AddActivity.this.finish();
             }
+        }
+    };
+
+    private void showBillHandleDialog(BillInfoLayout billInfoLayout){
+        final AlertDialog.Builder normalDialog = new AlertDialog.Builder(this);
+        normalDialog.setTitle("账单处理");
+        normalDialog.setMessage("确定要删除该条账单吗？");
+        normalDialog.setPositiveButton("确定",
+            new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    Bill bill = billInfoLayout.getBill();
+                    billDBEngine.delete_bill(bill); // 从数据库中删除记录
+                    billListLinearLayout.removeView(billInfoLayout);
+                }
+        });
+        normalDialog.setNegativeButton("取消",
+            new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+
+                }
+        });
+        // 显示
+        normalDialog.show();
+    }
+
+    public View.OnClickListener billClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            showBillHandleDialog((BillInfoLayout)view);
         }
     };
 }

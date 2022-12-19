@@ -31,6 +31,10 @@ public interface BillDao {
     //查
     @Query("SELECT * FROM Bill ORDER BY date DESC")
     List<Bill> get_all_bill();
+
+    // 查询（最多）前 k 个最新的记录
+    @Query("SELECT * FROM Bill ORDER BY date DESC LIMIT :k")
+    List<Bill> get_k_latest_bill(int k);
     // LiveData<List<Bill>> get_all_bill();
 
     /*@Query("SELECT * FROM Bill WHERE id = :id")

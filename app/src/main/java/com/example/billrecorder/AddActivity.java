@@ -13,6 +13,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -24,6 +25,7 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import com.example.billrecorder.Layout.BillInfoLayout;
 import com.example.billrecorder.database.Bill;
 import com.example.billrecorder.database.BillDBEngine;
 import com.example.billrecorder.iflytek.ASRUtil;
@@ -31,6 +33,9 @@ import com.google.android.material.textfield.TextInputEditText;
 
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class AddActivity extends AppCompatActivity {
 
@@ -48,6 +53,29 @@ public class AddActivity extends AppCompatActivity {
     private Button addBillCancel;
 
     private LinearLayout showBill;
+
+    private static int loadBillDelay = 500; // （重新）加载账单的延迟
+
+    // 延迟一段时间（等待异步的插入操作完成），将 Bill 数据库中的信息加载到 billList 中（也会将之前的清空）
+    public void showBillLoadBill() {
+        Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                showBill.removeAllViews();
+
+                List<Bill> billList = billDBEngine.query_k_latest_bill(4);
+                for (Bill bill : billList) {
+                    Log.d("Add", "get bill: " + bill.toString());
+
+                    // 创建一个新的 BillInfoLayout，设置账单信息，并记录到 List 里
+                    BillInfoLayout billInfoLayout = new BillInfoLayout(AddActivity.this, null);
+                    billInfoLayout.setInfo(bill);
+                    showBill.addView(billInfoLayout);
+                }
+            }
+        }, loadBillDelay); // 延迟
+    }
 
     // -------- 账单信息 --------
 
@@ -108,11 +136,12 @@ public class AddActivity extends AppCompatActivity {
     // 将当前的账单信息添加到数据库中
     private void dbAddBill() {
         Bill bill = new Bill(account_id, calendar_send.getTime().getTime(), (is_outcome?-1:1)*amount, note);
-        Toast.makeText(this, "insert " + bill.toString(), Toast.LENGTH_SHORT).show(); // TODO: 测试用，回头删掉
         billDBEngine.insert_bill(bill);
+
+        showBillLoadBill(); // 更新 showBill 列表
     }
 
-    // -------- onCreate --------
+    // -------- 回调函数 --------
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -162,6 +191,15 @@ public class AddActivity extends AppCompatActivity {
         // -------- 初始化数据库 --------
 
         billDBEngine = new BillDBEngine(this);
+
+        showBillLoadBill();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        showBillLoadBill(); // 每次进入 AddActivity 界面时，都更新 showBill
     }
 
     // -------- addBill 按钮状态切换 --------

@@ -46,6 +46,9 @@ public class BillDBEngine {
     /*public Bill query_bill_by_id(int id) {
         return billDao.get_bill_by_id(id);
     }*/
+    public List<Bill> query_k_latest_bill(int k) {
+        return billDao.get_k_latest_bill(k);
+    }
 
     //开启异步操作
     static class InsertAsynTask extends AsyncTask<Bill,Void,Void> {

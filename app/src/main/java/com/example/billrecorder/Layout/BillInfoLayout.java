@@ -22,6 +22,12 @@ public class BillInfoLayout extends ConstraintLayout {
     private TextView amount_text;
     private TextView note_text;
 
+    // -------- Bill 信息 --------
+
+    private Bill bill;
+
+    public Bill getBill() { return bill; }
+
     public BillInfoLayout(@NonNull Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
         LayoutInflater.from(context).inflate(R.layout.bill_info,BillInfoLayout.this);
@@ -34,9 +40,10 @@ public class BillInfoLayout extends ConstraintLayout {
 
     @SuppressLint("DefaultLocale")
     public void setInfo(Bill bill) {
-        Date d = new Date(bill.getDate());
-        date_text.setText(String.format("%tF", d));
-        time_text.setText(String.format("%tT", d));
+        this.bill = bill;
+
+        date_text.setText(String.format("%tF", bill.getDate()));
+        time_text.setText(String.format("%tT", bill.getDate()));
         amount_text.setText(String.valueOf(bill.getAmount()));
         note_text.setText(bill.getNote());
     }
