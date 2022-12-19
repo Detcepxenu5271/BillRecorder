@@ -12,6 +12,10 @@ import com.iflytek.cloud.SpeechError;
 import com.iflytek.cloud.SpeechRecognizer;
 import com.iflytek.cloud.SpeechUtility;
 
+import java.util.Objects;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 public class ASRUtil {
 
     public static String appid = "6b98ee69";
@@ -97,9 +101,34 @@ public class ASRUtil {
             }
             if (b) { // 语音识别结束
                 // 处理语音输入结果，提取类别、价格、备注信息
+                Pattern p;
+                Matcher m;
+
+                // 提取类别（收入/支出）
                 boolean is_outcome = true;
-                double amount = 7.7;
-                String note = result;
+                p = Pattern.compile("(收入|支出)");
+                m = p.matcher(result);
+                while (m.find()) {
+                    if (Objects.equals(m.group(0), "收入")) {
+                        is_outcome = false;
+                    } else
+                    if (Objects.equals(m.group(0), "支出")) {
+                        is_outcome = true;
+                    } else {
+                        is_outcome = true; // 没有识别到收入/支出，默认支出
+                    }
+                }
+                result = m.replaceAll(""); // 除去“收入”和“支出”（替换为空串）
+
+                // 提取金额和备注
+                double amount = 0.0;
+                String note = "";
+                p = Pattern.compile("(\\D*)(\\d+(\\.\\d+|))(元|块钱|块|)(.*)");
+                m = p.matcher(result);
+                if (m.find()) {
+                    amount = Double.parseDouble(Objects.requireNonNull(m.group(2)));
+                    note = m.group(1) + m.group(5);
+                }
 
                 // 返回结果
                 addActivity.setIs_outcome(is_outcome);

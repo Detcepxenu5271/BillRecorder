@@ -2,11 +2,16 @@ package com.example.billrecorder;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.core.app.ActivityCompat;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -63,13 +68,30 @@ public class AddActivity extends AppCompatActivity {
 
     // 回调函数：语音识别结束
     public void RecognizeFinish() {
-        Log.d("Add", "SpeechFinish");
+        Log.d("Add", "RecognizeFinish");
         Log.d("Add", "is_outcome = " + is_outcome);
         Log.d("Add", "amount = " + amount);
         Log.d("Add", "note = " + note);
 
         // 切换到手动输入界面
         switchManual(null, is_outcome, amount, note);
+    }
+
+    // -------- 权限设置 --------
+
+    private static final String[] PERMISSIONS_STORAGE = {
+            Manifest.permission.RECORD_AUDIO
+    };
+    private static int REQUEST_PERMISSION_CODE = 3; // XXX: 参考别人的写法，不知道为什么要设为 3、设为 3 对不对
+
+    public void getPermission(Activity obj) {
+        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.LOLLIPOP) {
+            for (String s : PERMISSIONS_STORAGE) {
+                if (ActivityCompat.checkSelfPermission(obj, s) != PackageManager.PERMISSION_GRANTED) {
+                    ActivityCompat.requestPermissions(obj, PERMISSIONS_STORAGE, REQUEST_PERMISSION_CODE);
+                }
+            }
+        }
     }
 
     // -------- onCreate --------
@@ -113,6 +135,10 @@ public class AddActivity extends AppCompatActivity {
         asrUtil = new ASRUtil();
         asrUtil.setAddActivity(this);
         asrUtil.InitASR(this);
+
+        // -------- 请求权限（录音） --------
+
+        getPermission(this);
     }
 
     // -------- addBill 按钮状态切换 --------
@@ -175,7 +201,7 @@ public class AddActivity extends AppCompatActivity {
 
                 asrUtil.StartSpeech(AddActivity.this);
 
-                // 接下来等待语音识别结束，asrUtil 会调用回调函数 SpeechFinish
+                // 接下来等待语音识别结束，asrUtil 会调用回调函数 SpeechFinish 和 RecognizeFinish
             }
             return false;
         }
